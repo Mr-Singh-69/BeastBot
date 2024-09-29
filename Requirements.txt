@@ -1,0 +1,7 @@
+
+npm i discord.js 
+npm i discord-player 
+npm i @discordjs/voice 
+npm i dotenv
+npm i spotify-web-api-node
+npm i better-queue
