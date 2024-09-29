@@ -14,6 +14,6 @@ module.exports = {
         await newChannel.setPosition(channelPosition);
 
         await message.channel.delete();
-        newChannel.send('💥 Channel has been nuked! 💥');
+        newChannel.send('ðŸ’¥ Channel has been nuked! ðŸ’¥');
     },
 };
