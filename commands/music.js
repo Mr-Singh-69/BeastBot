@@ -1,6 +1,21 @@
+const { Player } = require('discord-player');
+const SpotifyWebApi = require('spotify-web-api-node');
+
 module.exports = {
     name: 'music',
     async execute(message, args) {
+        const player = new Player(message.client, {
+            ytdlOptions: {
+                filter: 'audioonly',
+                highWaterMark: 1 << 25
+            }
+        });
+
+        const spotifyApi = new SpotifyWebApi({
+            clientId: '34462bd05795401e94603aba8470eae5',
+            clientSecret: 'c165c82caa414e5d9daa9933aeacc9ad'
+        });
+
         const voiceChannel = message.member.voice.channel;
 
         const searchQuery = args.join(' ');
@@ -11,7 +26,7 @@ module.exports = {
                 connection: null
             }
         });
-        
+
         try {
             if (!queue.connection) {
                 await queue.connect(voiceChannel);
@@ -21,15 +36,14 @@ module.exports = {
             console.error(`Error connecting to voice channel: ${error}`);
             return message.channel.send('Could not join the voice channel.');
         }
-        
+
         if (!voiceChannel) {
             return message.channel.send('You must be in a voice channel to use this command.');
         }
 
         if (!args[0]) {
             return message.channel.send('Please provide a song to play.');
-        }
-        else if (args[0] === 'spotify') {
+        } else if (args[0] === 'spotify') {
             const spotifyQuery = args.slice(1).join(' ');
 
             if (!spotifyQuery) {
@@ -53,12 +67,10 @@ module.exports = {
                         if (item) {
                             const ytdl = require('ytdl-core');
                             const stream = ytdl(item.trackUrl, { filter: 'audioonly' });
-                         
                         }
                     });
 
                     spotifyQueue.on('empty', () => {
-                       
                     });
 
                     spotifyQueue.start();
