@@ -18,7 +18,15 @@ module.exports = {
 
         const voiceChannel = message.member.voice.channel;
 
+        if (!voiceChannel) {
+            return message.channel.send('You must be in a voice channel to use this command.');
+        }
+
         const searchQuery = args.join(' ');
+
+        if (!searchQuery) {
+            return message.channel.send('Please provide a song to play.');
+        }
 
         const queue = player.createQueue(message.guild, {
             metadata: {
@@ -37,13 +45,7 @@ module.exports = {
             return message.channel.send('Could not join the voice channel.');
         }
 
-        if (!voiceChannel) {
-            return message.channel.send('You must be in a voice channel to use this command.');
-        }
-
-        if (!args[0]) {
-            return message.channel.send('Please provide a song to play.');
-        } else if (args[0] === 'spotify') {
+        if (args[0] === 'spotify') {
             const spotifyQuery = args.slice(1).join(' ');
 
             if (!spotifyQuery) {
@@ -80,6 +82,14 @@ module.exports = {
                     console.error(`Error searching Spotify: ${error}`);
                     message.channel.send('Error searching Spotify.');
                 });
+        } else {
+            try {
+                await queue.add(searchQuery);
+                await queue.play();
+            } catch (error) {
+                console.error(`Error playing song: ${error}`);
+                message.channel.send('Error playing song.');
+            }
         }
     }
 };
