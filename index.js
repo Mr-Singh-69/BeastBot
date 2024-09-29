@@ -3,6 +3,9 @@ const { joinVoiceChannel, createAudioPlayer, createAudioResource, AudioPlayerSta
 const { Player } = require('discord-player');
 const SpotifyWebApi = require('spotify-web-api-node');
 const { Queue } = require('better-queue');
+const fs = require('fs');
+const path = require('path');
+
 const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildVoiceStates, GatewayIntentBits.MessageContent] });
 client.commands = new Collection();
 
@@ -32,8 +35,8 @@ const player = new Player(client, {
 });
 
 const spotifyApi = new SpotifyWebApi({
-    clientId: ("34462bd05795401e94603aba8470eae5"),
-    clientSecret: ("c165c82caa414e5d9daa9933aeacc9ad")
+    clientId: '34462bd05795401e94603aba8470eae5',
+    clientSecret: 'c165c82caa414e5d9daa9933aeacc9ad'
 });
 
 keepAlive();
